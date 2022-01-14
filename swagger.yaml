@@ -1,0 +1,240 @@
+openapi: "3.0.0"
+info:
+  title: learn express and swagger - Online
+  description: Online course learn
+  version: 1.1.0
+  contract:
+    email: subhampaul456@gmail.com
+    url: "https://www.google.com/"
+
+# servers:
+#  - url: "https://localhost:4000/api/v1"
+#   description: for localhost - Secure
+#  - url: "http://localhost:4000/api/v1"
+#   description: for localhost - unSecure
+
+servers:
+  - url: "{protocol}://localhost:4000/api/{version}"
+    description: for localhost - Secure
+    variables: 
+      version:
+        enum:
+          - v1
+          - v2
+        default: v1 
+      protocol:
+        enum:
+          - http
+          - https
+        default: http
+
+components:
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: token
+    BearerAuth:
+      type: http
+      scheme: bearer 
+
+paths:
+  /lco:
+    get:
+      tags:
+        - String 
+      summary: returns a greet message from hello world
+      responses:
+        200:
+          description: all is well
+          content:
+            application/json:
+              schema:
+                type: string
+                example: "myString"
+                
+        400:
+          description: Bad Request
+        500:
+          description: Internal server Error
+
+  /lcoobject:
+    get:
+      tags:
+        - Object 
+      summary: returns unique course
+      responses:
+        200:
+          description: all great course
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  name:
+                    type: string
+                  price:
+                    type: number
+                
+        400:
+          description: Bad Request
+        500:
+          description: Internal server Error
+
+  /courses:
+    get:
+      tags:
+        - Array 
+      summary: returns all course
+      responses:
+        200:
+          description: all great course
+          content:
+            application/json:
+              schema:
+                type: array
+                items: 
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                    name:
+                      type: string
+                    price:
+                      type: number
+                
+        400:
+          description: Bad Request
+        500:
+          description: Internal server Error
+
+  /lcocourse/{courseId}:
+    get:
+      tags:
+        - String 
+      summary: returns courses based on Request id 
+      parameters:
+        - name: courseId 
+          in: path
+          required: true
+          default: 22
+          schema:
+            type: string
+      responses:
+        200:
+          description: all great course
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  name:
+                    type: string
+                  price:
+                    type: number
+                
+        400:
+          description: Bad Request
+        500:
+          description: Internal server Error
+
+  /addCourse:
+    post:
+      tags:
+        - String 
+      summary: add new courses 
+      consumes:
+        - application/json
+      producess:
+        - application/json
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  name:
+                    type: string
+                  price:
+                    type: number  
+      responses:
+        200:
+          description: all great course
+          content:
+            application/json:
+              schema:
+                type: boolean
+                
+        400:
+          description: Bad Request
+        500:
+          description: Internal server Error
+
+  /courseQuery:
+    get:
+      tags:
+        - String 
+      summary: tring to learn about query
+      parameters:
+
+        - name: location
+          in: query
+          required: true
+          schema:
+            type: string
+            enum: [Delhi, Mumbai, Kolkata]
+
+        - name: device
+          in: query
+          required: true
+          schema:
+            type: string
+            enum: [Web,Mobile]
+      responses:
+        200:
+          description: all great course
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  location:
+                    type: string
+                  device:
+                    type: string
+        400:
+          description: Bad Request
+        500:
+          description: Internal server Error
+
+  /courseUpload:
+    post:
+      tags:
+        - String 
+      summary: uploading course image
+      parameters:
+        - in: header
+          name: auth
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        200:
+          description: all great course
+        400:
+          description: Bad Request
+        500:
+          description: Internal server Error
