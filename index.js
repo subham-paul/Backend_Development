@@ -8,7 +8,7 @@ const fileUpload = require('express-fileupload');
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
-app.use(express.json())
+app.use(express.json());
 
 app.use(fileUpload());
 
